@@ -82,6 +82,6 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
 
 tags {
       env = "${var.env}"
-      Name = "${var.env}${var.appname}"
+      Name = "${var.env}${var.appname}-0${count.index + 1}"
   }
 }
