@@ -1,13 +1,9 @@
-data "aws_iam_role" "iamrole" {
-  name = "${var.role_name}"
-}
-
 resource "aws_elastic_beanstalk_application" "beanstalkapp" {
   name        = "${var.env}${var.appname}"
   description = "${var.description}"
 
   appversion_lifecycle {
-    service_role          = "${data.aws_iam_role.iamrole.rolearn}"
+    service_role          = "${var.service_role}"
     max_count             = 128
     delete_source_from_s3 = true
   }
