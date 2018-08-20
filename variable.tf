@@ -47,3 +47,5 @@ variable "min_size" {
 variable "max_size" {
     default = 3
 }
+
+variable "create_vpc" {}

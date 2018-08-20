@@ -1,4 +1,5 @@
 resource "aws_elastic_beanstalk_application" "beanstalkapp" {
+  count = ${var.create_vpc ? 1 : 0}
   name        = "${var.env}${var.appname}"
   description = "${var.description}"
 
@@ -10,6 +11,7 @@ resource "aws_elastic_beanstalk_application" "beanstalkapp" {
 }
 
 resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
+  count = ${var.create_vpc ? 1 : 0}
   name                = "${var.appname}-env"
   application         = "${aws_elastic_beanstalk_application.beanstalkapp.name}"
   cname_prefix = "${var.appname}"
