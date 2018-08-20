@@ -22,7 +22,9 @@ variable "version_label" {
 
 variable "vpcid" {}
 
-variable "public_subnet" {}
+variable "public_subnet" {
+    type = "list"
+}
 
 variable "service_role" {}
 
