@@ -211,6 +211,6 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
 
 tags {
       env = "${var.env}"
+      name = "${var.appname}-env0${count.index + 1}"
   }
-
 }
