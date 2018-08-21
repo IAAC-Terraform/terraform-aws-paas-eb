@@ -46,12 +46,6 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
     value = "${var.max_size}"
   }
 
-  setting {
-    namespace = "aws:autoscaling:asg"
-    name      = "Availability Zones"
-    value     = "${var.availability_zones}"
-  }
-
 ###=========================== ELB Settings ========================== ###
 
   setting {
@@ -149,7 +143,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
   setting {
     namespace = "aws:elasticbeanstalk:environment"
     name = "EnvironmentType"
-    value = "LoadBalanced"
+    value = "${var.environment_type}"
   }
 
   setting {
@@ -200,7 +194,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
   setting {
     namespace = "aws:autoscaling:updatepolicy:rollingupdate"
     name      = "RollingUpdateEnabled"
-    value     = "true"
+    value     = true
   }
 
   setting {

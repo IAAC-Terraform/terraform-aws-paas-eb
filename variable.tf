@@ -56,15 +56,15 @@ variable "updating_max_batch" {}
 
 variable "rolling_update_type" {}
 
-variable "private_subnets" {}
+variable "private_subnets" {
+    type =  "list"
+}
 
 variable "ssh_source_restriction" {}
 
 variable "root_volume_size" {}
 
 variable "root_volume_type" {}
-
-variable "availability_zones" {}
 
 variable "ssh_listener_port" {
   default     = "22"
