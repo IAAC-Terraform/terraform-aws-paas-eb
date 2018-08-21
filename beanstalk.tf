@@ -156,7 +156,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
     namespace = "aws:elasticbeanstalk:environment"
     name      = "ServiceRole"
     value     = "${var.service_role}"
-  }
+  }*/
 
  ###=========================== EC2 Settings ========================== ###
 
@@ -173,7 +173,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
     value     = "${var.associate_public_ip_address}"
   }
 
-  setting {
+/*  setting {
     namespace = "aws:ec2:vpc"
     name      = "ELBSubnets"
     value     = "${join(",", var.public_subnets)}"
