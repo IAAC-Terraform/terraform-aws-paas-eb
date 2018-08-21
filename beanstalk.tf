@@ -211,10 +211,6 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
 
 tags {
       env = "${var.env}"
-      Name = "${var.appname}-env0${count.index + 1}"
   }
 
-  lifecycle {
-    ignore_changes = [ "tags" ]
-  }
 }
