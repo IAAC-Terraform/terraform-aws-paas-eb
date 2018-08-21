@@ -48,7 +48,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
 
 ###=========================== ELB Settings ========================== ###
 
-  setting {
+/*  setting {
     namespace = "aws:elb:loadbalancer"
     name      = "CrossZone"
     value     = "true"
@@ -207,7 +207,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
     namespace = "aws:autoscaling:updatepolicy:rollingupdate"
     name      = "MinInstancesInService"
     value     = "${var.updating_min_in_service}"
-  }
+  }*/
 
 tags {
       env = "${var.env}"
