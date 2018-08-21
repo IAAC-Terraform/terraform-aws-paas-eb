@@ -20,22 +20,18 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
   solution_stack_name = "${var.solution_stack_name}"
   wait_for_ready_timeout = "20m"
 
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name = "IamInstanceProfile"
-    value = "${var.iam_instance-profile}"
-  }
-
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name = "InstanceType"
-    value = "${var.instance_type}"
-  }
+###=========================== AutoScaling Settings ========================== ###
 
   setting {
     namespace = "aws:autoscaling:asg"
     name = "Availability Zones"
     value = "Any 2"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:asg"
+    name = "Cooldown"
+    value = "360"
   }
 
   setting {
@@ -51,9 +47,115 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
   }
 
   setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "Availability Zones"
+    value     = "${var.availability_zones}"
+  }
+
+###=========================== ELB Settings ========================== ###
+
+  setting {
+    namespace = "aws:elb:loadbalancer"
+    name      = "CrossZone"
+    value     = "true"
+  }
+
+  setting {
+    namespace = "aws:elb:listener"
+    name      = "ListenerProtocol"
+    value     = "HTTP"
+  }
+  setting {
+    namespace = "aws:elb:listener"
+    name      = "InstancePort"
+    value     = "80"
+  }
+
+  setting {
+    namespace = "aws:elb:listener"
+    name      = "ListenerEnabled"
+    value     = "${var.http_listener_enabled  == "true" ? "true" : "false"}"
+  }
+
+  setting {
+    namespace = "aws:elb:listener:${var.ssh_listener_port}"
+    name      = "ListenerProtocol"
+    value     = "TCP"
+  }
+  setting {
+    namespace = "aws:elb:listener:${var.ssh_listener_port}"
+    name      = "InstancePort"
+    value     = "22"
+  }
+
+  setting {
+    namespace = "aws:elb:listener:${var.ssh_listener_port}"
+    name      = "ListenerEnabled"
+    value     = true
+  }
+
+  setting {
+    namespace = "aws:elb:policies"
+    name      = "ConnectionSettingIdleTimeout"
+    value     = "3600"
+  }
+  setting {
+    namespace = "aws:elb:policies"
+    name      = "ConnectionDrainingEnabled"
+    value     = "true"
+  }
+###=========================== Elastic BeanStalk Application Settings ========================== ###
+  setting {
+    namespace = "aws:elasticbeanstalk:application"
+    name      = "Application Healthcheck URL"
+    value     = "HTTP:80${var.healthcheck_url}"
+  }
+
+###=========================== AutoScaling Launch Configuration Settings ========================== ###
+
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name = "IamInstanceProfile"
+    value = "${var.iam_instance-profile}"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name = "InstanceType"
+    value = "${var.instance_type}"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "SSHSourceRestriction"
+    value     = "tcp, 22, 22, ${var.ssh_source_restriction}"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "RootVolumeSize"
+    value     = "${var.root_volume_size}"
+  }
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "RootVolumeType"
+    value     = "${var.root_volume_type}"
+  }
+
+
+
+###=========================== BeanStalk Environment Settings ========================== ###
+
+  setting {
     namespace = "aws:elasticbeanstalk:environment"
     name = "EnvironmentType"
-    value = "SingleInstance"
+    value = "LoadBalanced"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name = "LoadBalancerType"
+    value = "${var.lb_type}"
   }
 
   setting {
@@ -61,6 +163,9 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
     name      = "ServiceRole"
     value     = "${var.service_role}"
   }
+
+ ###=========================== EC2 Settings ========================== ###
+
 
   setting {
     namespace = "aws:ec2:vpc"
@@ -76,8 +181,38 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
 
   setting {
     namespace = "aws:ec2:vpc"
+    name      = "ELBSubnets"
+    value     = "${join(",", var.public_subnets)}"
+  }
+
+  setting {
+    namespace = "aws:ec2:vpc"
     name      = "Subnets"
-    value     = "${element(var.public_subnet, 0)}"
+    value     = "${join(",", var.private_subnets)}"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
+    name      = "RollingUpdateType"
+    value     = "${var.rolling_update_type}"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
+    name      = "RollingUpdateEnabled"
+    value     = "true"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
+    name      = "MaxBatchSize"
+    value     = "${var.updating_max_batch}"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
+    name      = "MinInstancesInService"
+    value     = "${var.updating_min_in_service}"
   }
 
 tags {
