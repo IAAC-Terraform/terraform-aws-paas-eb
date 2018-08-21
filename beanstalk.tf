@@ -22,7 +22,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
 
 ###=========================== AutoScaling Settings ========================== ###
 
-  setting {
+/*  setting {
     namespace = "aws:autoscaling:asg"
     name = "Availability Zones"
     value = "Any 2"
@@ -48,7 +48,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
 
 ###=========================== ELB Settings ========================== ###
 
-/*  setting {
+  setting {
     namespace = "aws:elb:loadbalancer"
     name      = "CrossZone"
     value     = "true"
