@@ -53,7 +53,7 @@ setting {
   setting {
     namespace = "aws:elasticbeanstalk:environment"
     name = "EnvironmentType"
-    value = "SingleInstance"
+    value = "${var.environment_type}"
   }
 
   setting {
@@ -77,7 +77,7 @@ setting {
   setting {
     namespace = "aws:ec2:vpc"
     name      = "Subnets"
-    value     = "${element(var.public_subnet, 0)}"
+    value     = "${element(var.public_subnet, count.index)}"
   }
 
 tags {

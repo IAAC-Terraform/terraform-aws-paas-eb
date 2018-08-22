@@ -22,7 +22,7 @@ variable "version_label" {
 
 variable "vpcid" {}
 
-variable "public_subnets" {
+variable "public_subnet" {
     type = "list"
 }
 
@@ -50,44 +50,7 @@ variable "max_size" {
 
 variable "create_vpc" {}
 
-variable "updating_min_in_service" {}
-
-variable "updating_max_batch" {}
-
-variable "rolling_update_type" {}
-
-variable "private_subnets" {
-    type =  "list"
-}
-
-variable "ssh_source_restriction" {}
-
-variable "root_volume_size" {}
-
-variable "root_volume_type" {}
-
-variable "ssh_listener_port" {
-  default     = "22"
-  description = "SSH port"
-}
-
-variable "http_listener_enabled" {
-    default = true
-
-
-variable "https_listener_enabled" {
-    default = false
-}
-
-variable "healthcheck_url" {
-  default     = "/healthcheck"
-  description = "Application Health Check URL. Elastic Beanstalk will call this URL to check the health of the application running on EC2 instances"
-}
-
 variable "environment_type" {
     default = "SingleInstance"
 }
 
-variable "lb_type" {
-    default = "classic"
-}
