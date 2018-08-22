@@ -91,3 +91,5 @@ variable "environment_type" {
 variable "lb_type" {
     default = "classic"
 }
+
+variable "tags" {}

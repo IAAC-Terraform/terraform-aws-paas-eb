@@ -209,8 +209,5 @@ resource "aws_elastic_beanstalk_environment" "beanstalkenv" {
     value     = "${var.updating_min_in_service}"
   }*/
 
-tags {
-      env = "${var.env}"
-      name = "${var.appname}-env0${count.index + 1}"
-  }
+tags = "${merge(map("Name", format("%s", var.name)), var.tags)}"
 }
