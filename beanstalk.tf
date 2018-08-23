@@ -82,6 +82,5 @@ setting {
 
 tags {
       env = "${var.env}"
-      Name = "${var.appname}-env0${count.index + 1}"
   }
 }
